@@ -1,5 +1,5 @@
-compile: main.c #list.c list.h songLib.c songLib.h
-	gcc main.c -o myShell #songLib.c list.c
+compile: main.c shellFnc.c shellFnc.h
+	gcc main.c shellFnc.c -o myShell
 
 run: compile
 	./myShell
