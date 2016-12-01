@@ -3,14 +3,15 @@
 #include <unistd.h>
 #include <string.h>
 
-char readInput(){//Obtains user input
-	char cmd[100];
-	char cmdNew[100];
-	printf("Enter a command: \n");
-	fgets(cmd, sizeof(cmd) , stdin);
-	strncpy(cmdNew, cmd, strlen(cmd) - 1); //fixing fgets input
+char * getInput(){//Obtains user input
+	char * cmd = (char *) malloc(1000);
+	printf("command: %s\n", cmd);
+	printf("Enter a command:");
+	fgets(cmd, sizeof(cmd), stdin); //sizeof works correctly
+	char * r = strchr(cmd, '\n');//strchr returns pointer, set to zero to remove /n
+	r = NULL;
 	//printf("%s\n", cmd);
-	return cmdNew[0];
+	return cmd;
 }
 
 char * parse(char command){//Parses and prepares user input

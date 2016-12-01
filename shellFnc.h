@@ -1,4 +1,4 @@
-char readInput();
+char * getInput();
 char * parse();
 int execute();
 void printInput();
