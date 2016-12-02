@@ -9,12 +9,11 @@ int main(){
 	printf("\n");
 	printf("Shell running...\n\n");
 	input = getInput();
-	printf("Input: %s\n", input);
 
 	currentParsed = parse(input);
 	printInput(currentParsed);
 
-	//execute(currentParsed);
+	execute(currentParsed);
 	printf("\n");
 	return 0;
 }

@@ -5,17 +5,16 @@
 
 char * getInput(){//Obtains user input
 	char * cmd = (char *) malloc(1000);
-	printf("command: %s\n", cmd);
 	printf("Enter a command: ");
 	fgets(cmd, 1000, stdin); //sizeof does not work
 	char * r = strchr(cmd, '\n');//strchr returns pointer, set to zero to remove /n
-	r = NULL;
+	*r = 0;
 	//printf("%s\n", cmd);
 	return cmd;
 }
 
 char ** parse(char * cmd){//Parses and prepares user input
-	printf("%s\n", cmd);
+	printf("Full Input: %s\n", cmd);
 	char ** input = (char **) malloc(1000);
 	char * s = cmd;
 	char * p = cmd;
@@ -29,9 +28,9 @@ char ** parse(char * cmd){//Parses and prepares user input
 	return input;
 }
 
-int execute(char * input){//executes program, does not fork yet
-	printf("Executing\n");
-	execvp(&input[0], &input); //executing command
+int execute(char ** input){//executes program, does not fork yet
+	printf("Executing...\n\n");
+	execvp(input[0], input); //executing command
 	return 0;
 }
 
