@@ -2,10 +2,11 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <sys/wait.h>
 
 char * getInput(){//Obtains user input
 	char * cmd = (char *) malloc(1000);
-	printf("Enter a command: ");
+	printf("----------------Enter a command: ");
 	fgets(cmd, 1000, stdin); //sizeof does not work
 	char * r = strchr(cmd, '\n');//strchr returns pointer, set to zero to remove /n
 	*r = 0;
@@ -28,9 +29,20 @@ char ** parse(char * cmd){//Parses and prepares user input
 	return input;
 }
 
-int execute(char ** input){//executes program, does not fork yet
+int execute(char ** input){//executes program
 	printf("Executing...\n\n");
-	execvp(input[0], input); //executing command
+
+	if(! strcmp(input[0], "exit")){//implementation of exit
+		exit(0);
+	}
+
+	int pid = fork();
+	if (pid == 0){
+		execvp(input[0], input);
+	}else{
+		wait(&pid);
+	}
+
 	return 0;
 }
 

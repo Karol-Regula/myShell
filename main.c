@@ -8,14 +8,16 @@ int main(){
 
 	printf("\n");
 	printf("Shell running...\n\n");
-	input = getInput();
 
-	currentParsed = parse(input);
-	printInput(currentParsed);
+	while(1){//main loop for now
+		input = getInput();
 
-	execute(currentParsed);
-	printf("\n");
-	return 0;
+		currentParsed = parse(input);
+		printInput(currentParsed);
+
+		execute(currentParsed);
+		printf("\n");
+	}
 }
 
 //strlen to replace sizeof
