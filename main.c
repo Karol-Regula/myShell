@@ -4,15 +4,16 @@
 
 int main(){
 	char * input;
-	char current[100];
-	char * currentParsed[20];
+	char ** currentParsed;
 
 	printf("\n");
 	printf("Shell running...\n\n");
 	input = getInput();
 	printf("Input: %s\n", input);
-	//currentParsed[0] = parse(current);
-	//printInput(currentParsed);
+
+	currentParsed = parse(input);
+	printInput(currentParsed);
+
 	//execute(currentParsed);
 	printf("\n");
 	return 0;
