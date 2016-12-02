@@ -30,7 +30,7 @@ void parseLine(char * cmd){
 	while(input[x]){
 		printInput(&input[x]);
 		if(x){
-			n = 1;
+			n = 1;//To do: fix whitepsace processing
 		}
 		parse(input[x], n);
 		x++;
@@ -59,11 +59,15 @@ void execute(char ** input){//executes program
 		exit(0);
 	}
 
-	int pid = fork();
-	if (pid == 0){
-		execvp(input[0], input);
+	if(strcmp(input[0], "cd") == 0){//implementation of redirection
+		chdir(input[1]);
 	}else{
-		wait(&pid);
+		int pid = fork();
+		if (pid == 0){
+			execvp(input[0], input);
+		}else{
+			wait(&pid);
+		}
 	}
 }
 
