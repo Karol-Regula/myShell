@@ -6,6 +6,7 @@ int main(){
 	char * input;
 
 	printf("\n");
+	printf("Please separate each argument with one space.\n");
 	printf("Shell running...\n\n");
 
 	while(1){//main loop for now
