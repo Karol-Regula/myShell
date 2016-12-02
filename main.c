@@ -4,7 +4,6 @@
 
 int main(){
 	char * input;
-	char ** currentParsed;
 
 	printf("\n");
 	printf("Shell running...\n\n");
@@ -12,10 +11,8 @@ int main(){
 	while(1){//main loop for now
 		input = getInput();
 
-		currentParsed = parse(input);
-		printInput(currentParsed);
+		parseLine(input);
 
-		execute(currentParsed);
 		printf("\n");
 	}
 }

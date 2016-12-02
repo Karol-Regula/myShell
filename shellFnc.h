@@ -1,4 +1,5 @@
 char * getInput();
-char ** parse(char *);
-int execute();
+void parse(char *, int n);
+void execute();
 void printInput(char **);
+void parseLine(char *);
