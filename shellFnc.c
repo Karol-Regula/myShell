@@ -71,6 +71,31 @@ void parse(char * cmd, int front){//Parses and prepares user input
 //for redirection: find < or >, grab filenames on each side
 }
 
+void redirect(char ** input){
+	printf("Redirecting... \n");
+	//finds arrows
+	int index = find(input, "<");
+	if (index == -1){
+		index = find(input, ">");
+	}
+	printf("Index of arrow: %d\n", index);
+
+	//redirects args properly by using dup2
+	//executes program
+	return;
+}
+
+int find(char ** input, char * test){//finds string in array
+	int x = 0;
+	while(input[x]){
+		if (! strcmp(input[x], test)){
+			return x;
+		}
+		x++;
+	}
+	return -1;
+}
+
 void execute(char ** input){//executes program
 	printf("Executing...\n\n");
 
@@ -78,14 +103,18 @@ void execute(char ** input){//executes program
 		exit(0);
 	}
 
-	if(strcmp(input[0], "cd") == 0){//implementation of redirection
-		chdir(input[1]);
+	if (find(input, ">") != -1 || find(input, "<") != -1){
+		redirect(input);
 	}else{
-		int pid = fork();
-		if (pid == 0){
-			execvp(input[0], input);
+		if(strcmp(input[0], "cd") == 0){//implementation of redirection
+			chdir(input[1]);
 		}else{
-			wait(&pid);
+			int pid = fork();
+			if (pid == 0){
+				execvp(input[0], input);
+			}else{
+				wait(&pid);
+			}
 		}
 	}
 }
