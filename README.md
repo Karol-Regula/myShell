@@ -110,3 +110,11 @@ by Karol Regula
 	Accepts array of pointers.
 	Prints the array of pointers in a nicely formatted way.
 	====================*/
+
+	/*======== int countArgs() ==========
+	Inputs: char ** input
+	Returns: int
+
+	Counts number of arguments in array of pointers.
+	Returns that number.
+	====================*/

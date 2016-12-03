@@ -196,7 +196,13 @@ void printInput(char ** input){//prints parsed command
 	return;
 }
 
-/*
+/*======== int countArgs() ==========
+Inputs: char ** input
+Returns: int
+
+Counts number of arguments in array of pointers.
+Returns that number.
+====================*/
 int countArgs(char ** input){
 	int x = 0;
 	while(input[x]){
@@ -204,4 +210,3 @@ int countArgs(char ** input){
 	}
 	return x - 1;
 }
-*/

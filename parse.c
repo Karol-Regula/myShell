@@ -14,7 +14,7 @@ Separates string into array of pointers using " " as a delimiter.
 Does some basic whitespace avoidance operations.
 ====================*/
 void parseLine(char * cmd){
-	printf("Full Input: %s\n", cmd);
+	//printf("Full Input: %s\n", cmd);
 	char ** input = (char **) malloc(1000);
 	char * s = cmd;
 	int x = 0;
@@ -29,7 +29,7 @@ void parseLine(char * cmd){
 	while(input[x]){
 		front = 0;
 		end = 0;
-		printInput(&input[x]);
+		//printInput(&input[x]);
 		if(x){
 			front = 1;//To do: fix whitepsace processing
 		}
@@ -60,17 +60,17 @@ void parse(char * cmd, int front){//Parses and prepares user input
 	input = &input[front];
 
 	end = countArgs(&input[0]);//whitespace
-	printf("end: %d\n", end);
+	//printf("end: %d\n", end);
 	if (input[end]){
 			if (strcmp(input[end], "") == 0){
-				printf("removed\n");
+				//printf("removed\n");
 				input[end] = 0;
 			}
 	}
 
 	input[x] = 0; //adding terminiating NULL to array
 
-	printInput(input);
+	//printInput(input);
 	execute(input);
 
 
