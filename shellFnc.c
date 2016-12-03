@@ -18,7 +18,7 @@ Passes input back to main() as a string.
 char * getInput(){//Obtains user input
 	char * cmd = (char *) malloc(1000);
 	printf("-----------------------------------------------------\n");
-	printf("Enter a command: ");
+	printf("Enter a command $ ");
 	fgets(cmd, 1000, stdin); //sizeof does not work
 	char * r = strchr(cmd, '\n');//strchr returns pointer, set to zero to remove /n
 	*r = 0;
@@ -43,8 +43,10 @@ void redirect(char ** input){
 
 	left = find(input, "<");
 	right = find(input, ">");
-	printf("Index of left arrow: %d\n", left);
-	printf("Index of right arrow: %d\n", right);
+	int STDOUT_FILENOx = dup(STDOUT_FILENO);
+	int STDIN_FILENOx = dup(STDIN_FILENO);
+	//printf("Index of left arrow: %d\n", left);
+	//printf("Index of right arrow: %d\n", right);
 
 	//processing of right arrow, (output)
 	if (right != -1){
@@ -66,8 +68,13 @@ void redirect(char ** input){
 	if (pid == 0){
 		execvp(input[0], input);
 	}else{
-		//wait(&pid);
+		wait(&pid);
 	}
+	dup2(STDOUT_FILENOx, STDOUT_FILENO);
+	close(STDOUT_FILENOx);
+	dup2(STDIN_FILENOx, STDIN_FILENO);
+	close(STDIN_FILENOx);
+	printf("\n");
 	return;
 }
 
