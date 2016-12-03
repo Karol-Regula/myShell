@@ -7,6 +7,14 @@
 #include "shellFnc.h"
 #include "parse.h"
 
+/*======== char * getInput() ==========
+Inputs: None
+Returns: char *
+
+Uses fgets() to obtain use input from commandline.
+Removes newline character from input.
+Passes input back to main() as a string.
+====================*/
 char * getInput(){//Obtains user input
 	char * cmd = (char *) malloc(1000);
 	printf("-----------------------------------------------------\n");
@@ -18,6 +26,14 @@ char * getInput(){//Obtains user input
 	return cmd;
 }
 
+/*======== void redirect() ==========
+Inputs: char ** input
+Returns: void
+
+Identifies location of redirection operators in the expression.
+Cuts up inputted commands and open / reads from files as needed.
+Uses dup2() to manage file descriptors.
+====================*/
 void redirect(char ** input){
 	printf("Redirecting... \n");
 	int left;
@@ -55,6 +71,14 @@ void redirect(char ** input){
 	return;
 }
 
+/*======== void piper() ==========
+Inputs: char ** input
+Returns: void
+
+Identifies location of pipe in expression.
+Creates copies of 2 main file descriptors.
+Opens pipe, forks two children and pipes data.
+====================*/
 void piper(char ** input){
 	printf("Piping... \n");
 	int index = find(input, "|");
@@ -101,6 +125,16 @@ void piper(char ** input){
 	return;
 }
 
+/*======== int find() ==========
+Inputs: char ** input
+		char * test
+Returns: int
+
+char ** input is target array of pointers.
+char * test is character that is looked for.
+Returns location of test in input.
+If not found, returns -1.
+====================*/
 int find(char ** input, char * test){//finds string in array
 	int x = 0;
 	while(input[x]){
@@ -112,6 +146,14 @@ int find(char ** input, char * test){//finds string in array
 	return -1;
 }
 
+/*======== void execute() ==========
+Inputs: char ** input
+Returns: void
+
+Takes parsed command from ' ' delimiter parser.
+Checks for exit commands, change of directory, redirection, or pipe.
+Calls appropriate function or executes command itself if no special requirement is needed.
+====================*/
 void execute(char ** input){//executes program
 	printf("Executing...\n\n");
 
@@ -138,6 +180,13 @@ void execute(char ** input){//executes program
 	}
 }
 
+/*======== void printInput() ==========
+Inputs: char ** input
+Returns: void
+
+Accepts array of pointers.
+Prints the array of pointers in a nicely formatted way.
+====================*/
 void printInput(char ** input){//prints parsed command
 	int x = 0;
 	while(input[x]){
@@ -147,6 +196,7 @@ void printInput(char ** input){//prints parsed command
 	return;
 }
 
+/*
 int countArgs(char ** input){
 	int x = 0;
 	while(input[x]){
@@ -154,3 +204,4 @@ int countArgs(char ** input){
 	}
 	return x - 1;
 }
+*/

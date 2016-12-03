@@ -7,7 +7,7 @@
 
 
 /*======== int parseLine() ==========
-Inputs:  char * cmd
+Inputs: char * cmd
 Returns: void
 
 Separates string into array of pointers using " " as a delimiter.
@@ -39,8 +39,8 @@ void parseLine(char * cmd){
 }
 
 /*======== void parseLine() ==========
-Inputs:  char * cmd
-		 int front
+Inputs: char * cmd
+		int front
 Returns: void
 
 Separates string into array of pointers using ' ' as a delimiter.

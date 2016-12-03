@@ -5,7 +5,7 @@
 
 
 /*======== int main() ==========
-Inputs:  None
+Inputs: None
 Returns: int
 
 Contains main loop that always runs while the shell is active.
