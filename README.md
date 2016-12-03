@@ -11,8 +11,8 @@ by Karol Regula
 ##Attempted:
 	The following did not end up working, but have been left in the code, commented out.
 	Tried to implement white space removal.
-	Tried to implement >>, but it kept overwriting the file
-	Looked at replacing ~/ with home directory, got seg faults.
+	Was not able to make piping entirely work after attempting two different functions.
+		I think that most of the code is correct and that one statement somewhere is breaking everything.
 
 ##Bugs / Features:
 	Not necessarily bug: All arguments must be separated with a space and made within reason, shell does not support Star Wars playback.

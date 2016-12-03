@@ -115,9 +115,9 @@ void piper(char ** input){
 		if (pid == 0){
 			dup2(fds[0], STDIN_FILENO);
 			close(fds[0]);
-			input = &input[back];
+			//input = &(input[back]);
 			//printf("Child2 about to exit.\n");
-			execvp(input[0], input);
+			execvp(input[back], &input[back]);
 		}else{
 			wait(&pid2);
 		}
