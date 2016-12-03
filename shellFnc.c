@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <sys/wait.h>
+#include <fcntl.h>
 #include "shellFnc.h"
 
 char * getInput(){//Obtains user input
@@ -73,16 +74,38 @@ void parse(char * cmd, int front){//Parses and prepares user input
 
 void redirect(char ** input){
 	printf("Redirecting... \n");
-	//finds arrows
-	int index = find(input, "<");
-	if (index == -1){
-		index = find(input, ">");
-	}
-	printf("Index of arrow: %d\n", index);
+	int left;
+	int right;
+	char * fileName;
+	int fd;
 
-	//redirects args properly by using dup2
+	left = find(input, "<");
+	right = find(input, ">");
+	printf("Index of left arrow: %d\n", left);
+	printf("Index of right arrow: %d\n", right);
+
+	//processing of right arrow, (output)
+	if (right != -1){
+		fileName = input[right + 1];
+		fd = open(fileName, O_CREAT | O_EXCL | O_WRONLY | O_APPEND, 0664);
+		dup2(fd, STDOUT_FILENO);
+		close(fd);
+		input[right] = 0;
+	}else{//processing of left arrow, (input)
+		fileName = input[left - 1];
+		fd = open(fileName, O_RDONLY, 0664);
+		dup2(STDIN_FILENO, fd);
+		close(fd);
+		input[0] = input[left];
+	}
+
 	//executes program
+	execvp(input[0], input);
 	return;
+}
+
+void pipe(char ** input){
+	
 }
 
 int find(char ** input, char * test){//finds string in array
