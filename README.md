@@ -17,6 +17,7 @@ by Karol Regula
 ##Bugs / Features:
 	Not necessarily bug: All arguments must be separated with a space and made within reason, shell does not support Star Wars playback.
 	Only a single '>', '<', '|' may be used at a time.
+	After calling the defective pipe function you need to type in exit twice for it to work.
 
 ##Files & Function Headers:
 
