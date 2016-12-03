@@ -87,7 +87,7 @@ void redirect(char ** input){
 	//processing of right arrow, (output)
 	if (right != -1){
 		fileName = input[right + 1];
-		fd = open(fileName, O_CREAT | O_EXCL | O_WRONLY | O_APPEND, 0664);
+		fd = open(fileName, O_CREAT | O_WRONLY | O_APPEND, 0664);
 		dup2(fd, STDOUT_FILENO);
 		close(fd);
 		input[right] = 0;
@@ -100,12 +100,59 @@ void redirect(char ** input){
 	}
 
 	//executes program
-	execvp(input[0], input);
+	int pid = fork();
+	if (pid == 0){
+		execvp(input[0], input);
+	}else{
+		//wait(&pid);
+	}
 	return;
 }
 
-void pipe(char ** input){
-	
+void piper(char ** input){
+	printf("Piping... \n");
+	int index = find(input, "|");
+	pid_t pid = 0;
+	int front = 0;
+	int back = index + 1;
+
+	int STDOUT_FILENOx = dup(STDOUT_FILENO);
+	int STDIN_FILENOx = dup(STDIN_FILENO);
+
+	int fds[2];
+	pipe(fds);
+	dup2(STDOUT_FILENO, fds[0]);
+
+	pid = fork();
+
+	if (pid == 0){
+		//printf("child1 running.\n");
+		dup2(fds[1], STDOUT_FILENO);
+		close(fds[1]);
+		input[index] = 0;
+		//printf("Child1 about to exit.\n");
+		execvp(input[front], input);
+	}else{
+		pid = fork();
+		if (pid == 0){
+			dup2(fds[0], STDIN_FILENO);
+			close(fds[0]);
+			input = &input[back];
+			//printf("Child2 about to exit.\n");
+			execvp(input[0], input);
+		}
+	}
+	sleep(0.1);
+
+	dup2(STDOUT_FILENOx, STDOUT_FILENO);
+  	dup2(STDIN_FILENOx, STDIN_FILENO);
+  	close(STDOUT_FILENOx);
+  	close(STDIN_FILENOx);
+
+
+	printf("Both exited.");
+	printf("I think the pipe worked, but I have no idea where the ouput of the 2nd command went...\n");
+	return;
 }
 
 int find(char ** input, char * test){//finds string in array
@@ -125,18 +172,21 @@ void execute(char ** input){//executes program
 	if(! strcmp(input[0], "exit")){//implementation of exit
 		exit(0);
 	}
-
-	if (find(input, ">") != -1 || find(input, "<") != -1){
-		redirect(input);
+	if(find(input, "|") != -1){
+		piper(input);
 	}else{
-		if(strcmp(input[0], "cd") == 0){//implementation of redirection
-			chdir(input[1]);
+		if (find(input, ">") != -1 || find(input, "<") != -1){
+			redirect(input);
 		}else{
-			int pid = fork();
-			if (pid == 0){
-				execvp(input[0], input);
+			if(strcmp(input[0], "cd") == 0){//implementation of redirection
+				chdir(input[1]);
 			}else{
-				wait(&pid);
+				int pid = fork();
+				if (pid == 0){
+					execvp(input[0], input);
+				}else{
+					wait(&pid);
+				}
 			}
 		}
 	}
