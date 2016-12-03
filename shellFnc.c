@@ -89,7 +89,8 @@ Opens pipe, forks two children and pipes data.
 void piper(char ** input){
 	printf("Piping... \n");
 	int index = find(input, "|");
-	pid_t pid = 0;
+	int pid = 0;
+	int pid2 = 0;
 	int front = 0;
 	int back = index + 1;
 
@@ -110,16 +111,18 @@ void piper(char ** input){
 		//printf("Child1 about to exit.\n");
 		execvp(input[front], input);
 	}else{
-		pid = fork();
+		pid2 = fork();
 		if (pid == 0){
 			dup2(fds[0], STDIN_FILENO);
 			close(fds[0]);
 			input = &input[back];
 			//printf("Child2 about to exit.\n");
 			execvp(input[0], input);
+		}else{
+			wait(&pid2);
 		}
 	}
-	sleep(0.1);
+	wait(&pid);
 
 	dup2(STDOUT_FILENOx, STDOUT_FILENO);
   	dup2(STDIN_FILENOx, STDIN_FILENO);
@@ -127,10 +130,55 @@ void piper(char ** input){
   	close(STDIN_FILENOx);
 
 
-	printf("Both exited.");
+	//printf("Both exited.");
+	printf("I think the pipe worked, but I have no idea where the ouput of the 2nd command went...\n");
+	printf("The structure of the commented-out pipe function underneath this one seems sound, but calling dup2() gives me a seg fault.\n");
+	return;
+}
+
+/*
+void piper(char ** input){
+	printf("Piping... \n");
+	int index = find(input, "|");
+	int front = 0;
+	int back = index + 1;
+
+	printf("\n");
+	int STDOUTx = dup(STDOUT_FILENO);
+	int STDINx = dup(STDIN_FILENO);
+
+	int fds[2] = {0};
+	int outcome = pipe(fds);
+	//printf("%d\n", outcome);
+	//dup2(STDOUT_FILENO, fds[0]);
+
+	//printf("child1 running.\n");
+	printf("fine\n");
+	dup2(fds[1], STDOUT_FILENO);
+	printf("fine\n");
+	close(fds[1]);
+	input[index] = 0;
+	//printf("Child1 about to exit.\n");
+	execute(input[front]);
+
+	dup2(STDOUTx, STDOUT_FILENO);
+
+	dup2(fds[0], STDIN_FILENO);
+	close(fds[0]);
+	input = &input[back];
+	//printf("Child2 about to exit.\n");
+	execute(input[0]);
+
+  	dup2(STDINx, STDIN_FILENO);
+  	close(STDOUTx);
+  	close(STDINx);
+
+
+	//printf("Both exited.");
 	printf("I think the pipe worked, but I have no idea where the ouput of the 2nd command went...\n");
 	return;
 }
+*/
 
 /*======== int find() ==========
 Inputs: char ** input
