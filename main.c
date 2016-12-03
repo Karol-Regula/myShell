@@ -1,7 +1,17 @@
 #include <stdio.h>
 #include <stdio.h>
 #include "shellFnc.h"
+#include "parse.h"
 
+
+/*======== int main() ==========
+Inputs:  None
+Returns: int
+
+Contains main loop that always runs while the shell is active.
+Exits with exit(0) when "exit" is typed into shell.
+Plays a small role in passing input strings in between functions.
+====================*/
 int main(){
 	char * input;
 
@@ -18,5 +28,4 @@ int main(){
 	}
 }
 
-//strlen to replace sizeof
 //use malloc and define variables in the functions, dont do this stupid variable passing thing

@@ -5,6 +5,7 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 #include "shellFnc.h"
+#include "parse.h"
 
 char * getInput(){//Obtains user input
 	char * cmd = (char *) malloc(1000);
@@ -15,61 +16,6 @@ char * getInput(){//Obtains user input
 	*r = 0;
 	//printf("%s\n", cmd);
 	return cmd;
-}
-
-void parseLine(char * cmd){
-	printf("Full Input: %s\n", cmd);
-	char ** input = (char **) malloc(1000);
-	char * s = cmd;
-	int x = 0;
-	while (s){
-		input[x] = strsep(&s, ";"); //parsing / separating command
-		x++;
-	}
-	input[x] = 0;
-	x = 0;
-	int front = 0;
-	int end = 0;
-	while(input[x]){
-		front = 0;
-		end = 0;
-		printInput(&input[x]);
-		if(x){
-			front = 1;//To do: fix whitepsace processing
-		}
-		parse(input[x], front);
-		x++;
-	}
-}
-
-void parse(char * cmd, int front){//Parses and prepares user input
-	char ** input = (char **) malloc(1000);
-	char * s = cmd;
-	int x = 0;
-	int end = 0;
-	while (s){
-		input[x] = strsep(&s, " "); //parsing / separating command
-		x++;
-	}
-
-	input = &input[front];
-
-	end = countArgs(&input[0]);//whitespace
-	printf("end: %d\n", end);
-	if (input[end]){
-			if (strcmp(input[end], "") == 0){
-				printf("removed\n");
-				input[end] = 0;
-			}
-	}
-
-	input[x] = 0; //adding terminiating NULL to array
-
-	printInput(input);
-	execute(input);
-
-
-//for redirection: find < or >, grab filenames on each side
 }
 
 void redirect(char ** input){

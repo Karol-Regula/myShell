@@ -1,5 +1,5 @@
-compile: main.c shellFnc.c shellFnc.h
-	gcc main.c shellFnc.c -o myShell
+compile: main.c shellFnc.c shellFnc.h parse.c parse.h
+	gcc main.c shellFnc.c parse.c -o myShell
 
 run: compile
 	./myShell
